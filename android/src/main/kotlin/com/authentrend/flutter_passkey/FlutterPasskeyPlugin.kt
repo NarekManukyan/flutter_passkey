@@ -45,7 +45,7 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
 
     companion object {
-        private const val LOG_TAG = "Fido2Demo"
+        private const val LOG_TAG = "Fido2"
         private const val REQUEST_CODE_REGISTER = 1
         private const val REQUEST_CODE_SIGN = 2
         private const val KEY_HANDLE_PREF = "key_handle"
@@ -294,7 +294,7 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
             _result.success(jsonResult.toString())
         } catch (e: Exception) {
-            Log.d(LOG_TAG, "signatureBase64: $e")
+            Log.d(LOG_TAG, "Error: $e")
 
             _result.error("Error", "Sign in failed", e)
         }

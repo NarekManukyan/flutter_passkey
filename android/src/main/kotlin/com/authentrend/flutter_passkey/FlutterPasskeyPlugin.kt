@@ -255,7 +255,8 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
       val response = res.response as AuthenticatorAssertionResponse
 
       val keyHandleBase64 = Base64.encodeToString(res.rawId, Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
-      val clientDataJson = Base64.encodeToString(response.clientDataJSON, Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
+      val dataJsonToByteArray = JSONObject(String(response.clientDataJSON, Charsets.UTF_8)).getString("origin").replaceAfter("android:apk-key-hash:","https://bitsgap.com").toString().toByteArray()
+      val clientDataJson = Base64.encodeToString(dataJsonToByteArray, Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
       val authenticatorDataBase64 =
         Base64.encodeToString(response.authenticatorData, Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
       val signatureBase64 = Base64.encodeToString(response.signature, Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
@@ -278,6 +279,8 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
       _result.success(jsonResult.toString())
     } catch (e: Exception) {
+      Log.d(LOG_TAG, "signatureBase64: $e")
+
       _result.error("Error", "Sign in failed", e)
     }
 

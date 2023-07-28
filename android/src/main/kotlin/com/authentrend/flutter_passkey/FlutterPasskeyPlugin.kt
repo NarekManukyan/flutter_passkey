@@ -261,6 +261,7 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             val clientDataObj = JSONObject(String(response.clientDataJSON, Charsets.UTF_8))
             val origin = clientDataObj.getString("origin")
                 .replaceAfter("android:apk-key-hash:", "https://bitsgap.com")
+                .removePrefix("android:apk-key-hash:")
             clientDataObj.put("origin", origin)
             val clientDataJson = Base64.encodeToString(
                 clientDataObj.toString().toByteArray(),

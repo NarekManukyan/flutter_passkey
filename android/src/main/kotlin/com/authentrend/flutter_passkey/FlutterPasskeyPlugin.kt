@@ -259,10 +259,6 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP
             )
             val clientDataObj = JSONObject(String(response.clientDataJSON, Charsets.UTF_8))
-            val origin = clientDataObj.getString("origin")
-                .replaceAfter("android:apk-key-hash:", "https://bitsgap.com")
-                .removePrefix("android:apk-key-hash:")
-            clientDataObj.put("origin", origin)
             val clientDataJson = Base64.encodeToString(
                 clientDataObj.toString().toByteArray(),
                 Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP

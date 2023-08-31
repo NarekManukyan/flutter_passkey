@@ -41,7 +41,7 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     @SuppressLint("StaticFieldLeak")
     private var activity: Activity? = null
-    private lateinit var _result: Result
+    private var _result: Result? = null
 
 
     companion object {
@@ -289,11 +289,11 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             jsonResult.put("type", "public-key")
             jsonResult.put("response", jsonResponse)
 
-            _result.success(jsonResult.toString())
+            _result!!.success(jsonResult.toString())
         } catch (e: Exception) {
             Log.d(LOG_TAG, "Error: $e")
 
-            _result.error("Error", "Sign in failed", e)
+            _result!!.error("Error", "Sign in failed", e)
         }
 
     }
@@ -310,12 +310,18 @@ class FlutterPasskeyPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
             FlutterFragmentActivity.RESULT_CANCELED -> {
                 val result = "Operation is cancelled"
-                _result.error("RESULT_CANCELED", result, "RESULT_CANCELED")
+                if(_result == null){
+                    return false;
+                }
+                _result!!.error("RESULT_CANCELED", result, "RESULT_CANCELED")
             }
 
             else -> {
                 val result = "Operation failed, with resultCode: $resultCode"
-                _result.error("FAILED", result, "$resultCode")
+                if(_result == null){
+                    return false;
+                }
+                _result!!.error("FAILED", result, "$resultCode")
             }
         }
 

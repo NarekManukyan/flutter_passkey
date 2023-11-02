@@ -43,8 +43,6 @@ android {
     defaultConfig {
         minSdkVersion 23
     }
-    namespace 'com.authentrend.flutter_passkey'
-
 }
 
 dependencies {
